@@ -1,0 +1,16 @@
+name: 30-minute-cron
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: call cloud function
+        env:
+          REQ_KEY: ${{ secrets.REQ_KEY }}
+          Q_KEY: ${{ secrets.Q_KEY }}
+        run: |
+          curl --request GET \
+          --header "Authorization: Bearer $REQ_KEY" \
+          --url "https://asia-southeast1-manga-tracker-a74d1.cloudfunctions.net/checkLatestManga?key=$Q_KEY"
